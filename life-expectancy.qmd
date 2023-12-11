@@ -1,0 +1,24 @@
+---
+title: "life-expectancy"
+format: gfm
+---
+
+```{r}
+library(readr)
+library(dplyr)
+library(ggplot2)
+```
+
+```{r}
+life_exp <- read.csv("data/DP_LIVE_11122023092440528.csv")
+```
+
+```{r}
+exp2020 <- life_exp |> 
+  filter(TIME == 2020 & SUBJECT == "TOT") |> 
+  group_by(LOCATION) |> 
+  summarise(
+    years = Value
+  )
+```
+
