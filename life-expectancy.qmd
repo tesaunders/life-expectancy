@@ -10,7 +10,8 @@ library(ggplot2)
 ```
 
 ```{r}
-life_exp <- read.csv("data/DP_LIVE_11122023092440528.csv")
+life_exp <- read_csv("data/DP_LIVE_11122023092440528.csv")
+health_spend <- read_csv("data/SHA_11122023093838475.csv")
 ```
 
 ```{r}
@@ -20,5 +21,15 @@ exp2020 <- life_exp |>
   summarise(
     years = Value
   )
+
+spend2020 <- health_spend |> 
+  filter(
+    `Financing scheme` == "All financing schemes",
+    Function == "Current expenditure on health (all functions)",
+    Provider == "All providers",
+    Measure == "Share of gross domestic product",
+    
+  )
+  
 ```
 
