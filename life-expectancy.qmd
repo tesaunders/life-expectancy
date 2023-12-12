@@ -76,9 +76,27 @@ full <- full_join(spend2020_percap, exp2020,
 ```{r}
 ggplot(full, aes(value_USD, years)) +
   geom_point() +
-  theme_classic()
+  theme
 ```
 
+```{r}
+# Using data within original dataset
+
+spend2020 <- health_spend |> 
+  filter(
+    `Financing scheme` == "All financing schemes",
+    Function == "Current expenditure on health (all functions)",
+    Provider == "All providers",
+    Measure == "Per capita, current prices, current PPPs",
+  )
+
+full2 <- full_join(spend2020, exp2020,
+          by = "LOCATION")
+
+ggplot(full2, aes(Value, years)) +
+  geom_point() +
+  theme_classic()
+```
 
 
 
