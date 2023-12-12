@@ -31,5 +31,6 @@ spend2020 <- health_spend |>
     
   )
   
+# Per capita expenditure
 ```
 
