@@ -6,6 +6,8 @@ format: gfm
 ```{r}
 library(readr)
 library(dplyr)
+library(countrycode)
+library(priceR)
 library(ggplot2)
 ```
 
@@ -22,15 +24,63 @@ exp2020 <- life_exp |>
     years = Value
   )
 
-spend2020 <- health_spend |> 
+spend2020_gdp <- health_spend |> 
   filter(
     `Financing scheme` == "All financing schemes",
     Function == "Current expenditure on health (all functions)",
     Provider == "All providers",
     Measure == "Share of gross domestic product",
-    
   )
-  
-# Per capita expenditure
 ```
+
+
+```{r}
+# Per capita expenditure
+
+spend2020_percap <- health_spend |> 
+  filter(
+    `Financing scheme` == "All financing schemes",
+    Function == "Current expenditure on health (all functions)",
+    Provider == "All providers",
+    Measure == "Per capita, current prices",
+  )
+
+# Get current exchange rate (figure out how to get historical)
+# Requires registering for a public key at https://exchangerate.host
+
+exchange <- exchange_rate_latest("USD") 
+
+# Add exchange rates matching by currency code
+
+spend2020_percap$exchange_USD <- exchange$one_USD_is_equivalent_to[match(spend2020_percap$`Unit Code`, exchange$currency)]
+
+# Calculate per capita values in USD
+
+spend2020_percap$value_USD <- spend2020_percap$Value / spend2020_percap$exchange_USD
+```
+
+```{r}
+# Combine columns of interest
+
+## Trim expenditure df
+
+spend2020_percap <- spend2020_percap |> 
+  select(c(9, 10, 23))
+
+# Join 
+
+full <- full_join(spend2020_percap, exp2020,
+          by = "LOCATION")
+```
+
+```{r}
+ggplot(full, aes(value_USD, years)) +
+  geom_point() +
+  theme_classic()
+```
+
+
+
+
+
 
