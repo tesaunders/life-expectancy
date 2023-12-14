@@ -48,6 +48,27 @@ ggplot(full2020, aes(Value, years)) +
   theme_classic()
 ```
 
+```{r}
+# Only government spending
+
+spend2020_govt <- health_spend |> 
+  filter(
+    `Financing scheme` == "Government/compulsory schemes",
+    Provider == "All providers",
+    Measure == "Per capita, current prices, current PPPs",
+  ) |> 
+  group_by(LOCATION) |> 
+  summarise(
+    total = sum(Value)
+  )
+
+full3 <- full_join(spend2020_govt, exp2020,
+          by = "LOCATION")
+
+ggplot(full3, aes(total, years)) +
+  geom_point() +
+  theme_classic()
+```
 
 
 
