@@ -1,6 +1,9 @@
 ---
 title: "life-expectancy"
 format: gfm
+knitr:
+  opts_chunk:
+    fig.path: figs/
 ---
 
 ```{r}
@@ -23,64 +26,11 @@ exp2020 <- life_exp |>
   summarise(
     years = Value
   )
-
-spend2020_gdp <- health_spend |> 
-  filter(
-    `Financing scheme` == "All financing schemes",
-    Function == "Current expenditure on health (all functions)",
-    Provider == "All providers",
-    Measure == "Share of gross domestic product",
-  )
 ```
 
 
 ```{r}
-# Per capita expenditure
-
-spend2020_percap <- health_spend |> 
-  filter(
-    `Financing scheme` == "All financing schemes",
-    Function == "Current expenditure on health (all functions)",
-    Provider == "All providers",
-    Measure == "Per capita, current prices",
-  )
-
-# Get current exchange rate (figure out how to get historical)
-# Requires registering for a public key at https://exchangerate.host
-
-exchange <- exchange_rate_latest("USD") 
-
-# Add exchange rates matching by currency code
-
-spend2020_percap$exchange_USD <- exchange$one_USD_is_equivalent_to[match(spend2020_percap$`Unit Code`, exchange$currency)]
-
-# Calculate per capita values in USD
-
-spend2020_percap$value_USD <- spend2020_percap$Value / spend2020_percap$exchange_USD
-```
-
-```{r}
-# Combine columns of interest
-
-## Trim expenditure df
-
-spend2020_percap <- spend2020_percap |> 
-  select(c(9, 10, 23))
-
-# Join 
-
-full <- full_join(spend2020_percap, exp2020,
-          by = "LOCATION")
-```
-
-```{r}
-ggplot(full, aes(value_USD, years)) +
-  geom_point() +
-  theme
-```
-
-```{r}
-# Using data within original dataset
+# Plot per capita expenditure
 
 spend2020 <- health_spend |> 
   filter(
@@ -90,10 +40,10 @@ spend2020 <- health_spend |>
     Measure == "Per capita, current prices, current PPPs",
   )
 
-full2 <- full_join(spend2020, exp2020,
+full2020 <- full_join(spend2020, exp2020,
           by = "LOCATION")
 
-ggplot(full2, aes(Value, years)) +
+ggplot(full2020, aes(Value, years)) +
   geom_point() +
   theme_classic()
 ```
