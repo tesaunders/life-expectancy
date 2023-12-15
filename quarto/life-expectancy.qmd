@@ -1,0 +1,55 @@
+---
+title: "life-expectancy"
+format: gfm
+knitr:
+  opts_chunk:
+    fig.path: ../figs/
+---
+
+```{r}
+library(readr)
+library(dplyr)
+library(ggplot2)
+```
+
+```{r}
+life_exp <- read_csv("../data/DP_LIVE_11122023092440528.csv")
+health_spend <- read_csv("../data/SHA_11122023093838475.csv")
+```
+
+```{r}
+exp2020 <- life_exp |> 
+  filter(TIME == 2020 & SUBJECT == "TOT") |> 
+  group_by(LOCATION) |> 
+  summarise(
+    years = Value
+  )
+```
+
+```{r}
+#| label: govt-expenditure-percapita 
+#| warning: false
+# Plot per capita government spending on health
+
+spend2020_govt <- health_spend |> 
+  filter(
+    `Financing scheme` == "Government/compulsory schemes",
+    Provider == "All providers",
+    Measure == "Per capita, current prices, current PPPs",
+  ) |> 
+  group_by(LOCATION) |> 
+  summarise(
+    total = sum(Value)
+  )
+
+full <- full_join(spend2020_govt, exp2020,
+          by = "LOCATION")
+
+ggplot(full, aes(total, years)) +
+  geom_point() +
+  theme_classic()
+```
+
+
+
+
