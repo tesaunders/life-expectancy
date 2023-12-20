@@ -1,6 +1,6 @@
 ---
 title: "life-expectancy"
-format: gfm
+format: html
 knitr:
   opts_chunk:
     fig.path: ../figs/
