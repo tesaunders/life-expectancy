@@ -1,19 +1,17 @@
 ---
-title: "life-expectancy"
-format:
-   html: 
-    output-file: "index.html"
-    embed-resources: true
-
+title: "Life Expectancy"
+author: "Tom Saunders"
+date: "2023-12-23"
+output: html_document
+knit: (function(inputFile, encoding) { rmarkdown::render(inputFile, encoding = encoding, output_file = file.path(dirname(inputFile), 'index.html')) })
 ---
-
-```{r}
+```{r, message=FALSE}
 library(readr)
 library(dplyr)
 library(ggplot2)
 ```
 
-```{r}
+```{r, message=FALSE}
 life_exp <- read_csv("data/DP_LIVE_11122023092440528.csv")
 health_spend <- read_csv("data/SHA_11122023093838475.csv")
 ```
@@ -27,9 +25,7 @@ exp2020 <- life_exp |>
   )
 ```
 
-```{r}
-#| label: govt-expenditure-percapita 
-#| warning: false
+```{r, warning=FALSE}
 # Plot per capita government spending on health
 
 spend2020_govt <- health_spend |> 
@@ -50,7 +46,3 @@ ggplot(full, aes(total, years)) +
   geom_point() +
   theme_classic()
 ```
-
-
-
-
