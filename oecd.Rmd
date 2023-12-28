@@ -5,6 +5,7 @@ date: "2023-12-23"
 output: html_document
 knit: (function(inputFile, encoding) { rmarkdown::render(inputFile, encoding = encoding, output_file = file.path(dirname(inputFile), 'index.html')) })
 bibliography: bibliography.json
+csl: style.csl
 ---
 
 ```{r, echo=FALSE, message=FALSE}
@@ -17,7 +18,7 @@ The Organisation for Economic Co-operation and Development (OECD) is an intergov
 
 ## Life Expectancy
 
-The determinants of life expectancy at birth comprise a complex interplay between demographic, social, and economic factors. However, an OECD study[@oecdWhatHasDriven2017a] assessing the relative contribution of several factors to life expectancy gains between 1995 and 2015 in all 35 OECD countries found that per capita health spending accounted for the greatest proportion of life expectancy gains, followed by education and personal income.
+The determinants of life expectancy at birth comprise a complex interplay between demographic, social, and economic factors. However, an OECD study[@oecdWhatHasDriven2017a] found that per capita health spending accounted for the greatest proportion of life expectancy gains among OECD countries between 1995 and 2015, followed by education and personal income.
 
 For the purposes of these analyses, life expectancy at birth data was downloaded from [OECD Data](https://data.oecd.org/healthstat/life-expectancy-at-birth.htm), and government health expenditure data was exported from [OECD Stat](https://stats.oecd.org/Index.aspx?DataSetCode=SHA). Both sources of data relate to the year 2019 to avoid irregularities introduced by responses to the COVID-19 pandemic. Government health expenditure is per capita, at current prices, with purchasing power parities taken into account. Data expressed in national currencies are converted into a common currency using Purchasing Power Parities (PPP). PPPs are conversion rates that show the ratio of prices for a basket of goods in one currency to the same goods in another. When PPPs are used to convert expenditure to a common unit means, the results are valued at a uniform price level and the comparison of expenditures across countries reflects only the differences in the volume of goods and services consumed.
 
