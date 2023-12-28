@@ -1,0 +1,77 @@
+[
+    {
+        "id": "oecdWhatHasDriven2017a",
+        "type": "chapter",
+        "collection-title": "Health at a Glance",
+        "container-title": "Health at a Glance 2017: OECD Indicators",
+        "ISBN": "978-92-64-28039-7",
+        "language": "en",
+        "note": "DOI: 10.1787/health_glance-2017-en",
+        "publisher": "OECD",
+        "source": "DOI.org (Crossref)",
+        "title": "What has driven life expectancy gains in recent decades? A cross-country analysis of OECD member states",
+        "URL": "https://www.oecd-ilibrary.org/social-issues-migration-health/health-at-a-glance-2017_health_glance-2017-en",
+        "container-author": [
+            {
+                "literal": "OECD"
+            }
+        ],
+        "accessed": {
+            "date-parts": [
+                [
+                    "2023",
+                    12,
+                    28
+                ]
+            ]
+        },
+        "issued": {
+            "date-parts": [
+                [
+                    "2017",
+                    11,
+                    10
+                ]
+            ]
+        }
+    },
+    {
+        "DOI": "10.1016/j.jpeds.2020.06.071",
+        "ISSN": "0022-3476",
+        "URL": "https://www.sciencedirect.com/science/article/pii/S0022347620308246",
+        "accessed": {
+            "date-parts": []
+        },
+        "author": [
+            {
+                "family": "Dixon",
+                "given": "Cinnamon A."
+            },
+            {
+                "family": "Mistry",
+                "given": "Rakesh D."
+            }
+        ],
+        "container-title": "The Journal of Pediatrics",
+        "container-title-short": "The Journal of Pediatrics",
+        "id": "dixon2020",
+        "issued": {
+            "date-parts": [
+                [
+                    2020,
+                    10,
+                    1
+                ]
+            ]
+        },
+        "key": "3N8QUTBQ",
+        "libraryid": "1",
+        "page": "231-232",
+        "providerkey": "2509FBBE-5BB0-44C4-B119-6083A81ED673",
+        "source": "ScienceDirect",
+        "title": "Dog Bites in Children Surge during Coronavirus Disease-2019: A Case for Enhanced Prevention",
+        "title-short": "Dog Bites in Children Surge during Coronavirus Disease-2019",
+        "type": "article-journal",
+        "volume": "225"
+    }
+]
