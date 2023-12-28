@@ -1,0 +1,91 @@
+---
+title: "OECD"
+author: "Tom Saunders"
+date: "2023-12-23"
+output: html_document
+knit: (function(inputFile, encoding) { rmarkdown::render(inputFile, encoding = encoding, output_file = file.path(dirname(inputFile), 'index.html')) })
+---
+```{r, echo=FALSE, message=FALSE}
+library(readr)
+library(dplyr)
+library(ggplot2)
+```
+
+The Organisation for Economic Co-operation and Development (OECD) is an intergovernmental organisation comprised of 38 countries which describe themselves as committed to democracy and the market economy. It was originally created as the Organisation for European Economic Co-operation (OEEC) in 1948 as part of the Marshall Plan following World War 2, and originally was comprised only of Western European states. In 1961 it was reformed into the OECD and membership was opened to non-European states, the first of which were the United States and Canada. The OECD publishes a variety of economic data, and ranks member countries across economic and social indicators. 
+
+## Life Expectancy
+
+
+
+For the purposes of these analyses, life expectancy data was downloaded from [OECD Data](https://data.oecd.org/healthstat/life-expectancy-at-birth.htm), and government health expenditure data was exported from [OECD Stat](https://stats.oecd.org/Index.aspx?DataSetCode=SHA). Both sources of data relate to the year 2019 to avoid irregularities introduced by responses to the COVID-19 pandemic. Government health expenditure is per capita, at current prices, with purchasing power parities taken into account. Data expressed in national currencies are converted into a common currency using Purchasing Power Parities (PPP). PPPs are conversion rates that show the ratio of prices for a basket of goods in one currency to the same goods in another. When PPPs are used to convert expenditure to a common unit means, the results are valued at a uniform price level and the comparison of expenditures across countries reflects only the differences in the volume of goods and services consumed.
+
+```{r, echo=FALSE, message=FALSE}
+life_exp <- read_csv("data/DP_LIVE_11122023092440528.csv")
+health_spend <- read_csv("data/SHA_11122023093838475.csv")
+```
+
+```{r, echo=FALSE}
+exp2020 <- life_exp |> 
+  filter(TIME == 2019 & SUBJECT == "TOT") |> 
+  group_by(LOCATION) |> 
+  summarise(
+    years = Value
+  )
+```
+
+```{r, echo=FALSE, warning=FALSE}
+# Get per capita government spending on health
+
+spend2020_govt <- health_spend |> 
+  filter(
+    `Financing scheme` == "Government/compulsory schemes",
+    Provider == "All providers",
+    Measure == "Per capita, current prices, current PPPs",
+  ) |> 
+  group_by(LOCATION) |> 
+  summarise(
+    total = sum(Value)
+  )
+
+full <- full_join(spend2020_govt, exp2020,
+          by = "LOCATION")
+
+med_spend <- median(full$total, na.rm = TRUE)
+med_life <- median(full$years, na.rm = TRUE)
+
+# Create subsets
+
+max_total <- subset(full, total == max(total, na.rm = TRUE))
+max_year <- subset(full, years == max(years, na.rm = TRUE))
+min_total <- subset(full, total == min(total, na.rm = TRUE))
+min_year <- subset(full, years == min(years, na.rm = TRUE))
+good_value <- subset(full, total < med_spend & years > med_life)
+bad_value <- subset(full, total > med_spend & years < med_life)
+
+# Plot
+
+ggplot(full, aes(total, years)) +
+  geom_point() +
+  geom_point(data = max_total, colour="blue") + 
+  geom_point(data = min_total, colour="blue") + 
+  geom_point(data = max_year, colour="blue") +
+  geom_point(data = min_year, colour="blue") +
+  geom_point(data = good_value, colour="green") +
+  geom_point(data = bad_value, colour="red") +
+  geom_text(data = max_total, label = "USA", colour = "red", vjust = 1.5) +
+  geom_text(data = min_total, label = "IND", colour = "blue", vjust = -0.35) +
+  geom_text(data = max_year, label = "JPN", colour = "blue", vjust = -0.35) +
+  geom_text(data = min_year, label = "ZAF", colour = "blue", vjust = -0.35) +
+  geom_hline(yintercept = med_life, colour = "green") +
+  geom_vline(xintercept = med_spend, colour = "green") +
+  theme_classic() +
+  theme(axis.title.y = element_text(margin = margin(t = 0, r = 20, b = 0, l = 0)),
+        axis.title.x = element_text(margin = margin(t = 20, r = 0, b = 0, l = 0)),
+        plot.title = element_text(margin = margin(t = 0, r = 0, b = 20, l = 0),
+                                  hjust = 0.5)) +
+  xlab("Per Capita Govt Spending on Health (PPP Common Unit)") +
+  ylab("Mean Life Expectancy (Years)") +
+  ggtitle("Health Spending and Life Expectancy in the OECD")
+```
+
+Green lines represent the median life expectancy (80.8 years; horizontal line) and median per capita government spend on health (4,266.82 units). Japan has the highest life expectancy (84.4 years), while South Africa has the lowest (65.7 years). The United States of America has the highest per capita government spending on healthcare (13569.22 units), while India has the lowest spending (78.47 units). Countries denoted with a green dot have life expectancies higher than the median, while spending less than the median (Greece, Israel, New Zealand, and Portugal), while countries denoted with red dots have life expectancies lower than the median, while spending more than the median (Czech Republic and United States of America).

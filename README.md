@@ -1,6 +1,6 @@
-# life-expectancy
+# oecd
 
-Simple analyses of OECD life expectancy data.
+Simple analyses of OECD  data.
 
 ## Data
 
