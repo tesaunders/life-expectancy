@@ -8,7 +8,7 @@ bibliography: bibliography.json
 csl: style.csl
 ---
 
-[**OECD Home**](/docs/index.html)
+[**OECD Home**](index.html)
 
 ```{r, echo=FALSE, message=FALSE}
 library(readr)
