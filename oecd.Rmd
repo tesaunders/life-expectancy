@@ -1,7 +1,5 @@
 ---
 title: "OECD"
-author: "Tom Saunders"
-date: "2023-12-23"
 output: html_document
 knit: (function(inputFile, encoding) { rmarkdown::render(inputFile, encoding = encoding, output_file = file.path(dirname(inputFile), '/docs/index.html')) })
 ---

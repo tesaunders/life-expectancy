@@ -1,7 +1,5 @@
 ---
-title: "OECD"
-author: "Tom Saunders"
-date: "2023-12-23"
+title: "Life Expectancy"
 output: html_document
 knit: (function(inputFile, encoding) { rmarkdown::render(inputFile, encoding = encoding, output_file = file.path(dirname(inputFile), '/docs/life-expectancy.html')) })
 bibliography: bibliography.json
@@ -15,8 +13,6 @@ library(readr)
 library(dplyr)
 library(ggplot2)
 ```
-
-## Life Expectancy
 
 The determinants of life expectancy at birth comprise a complex interplay between demographic, social, and economic factors. However, an OECD study[@oecdWhatHasDriven2017a] found that per capita health spending accounted for the greatest proportion of life expectancy gains among OECD countries between 1995 and 2015, followed by education and personal income.
 
