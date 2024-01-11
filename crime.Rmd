@@ -1,0 +1,41 @@
+---
+title: "Crime"
+output: html_document
+knit: (function(inputFile, encoding) { rmarkdown::render(inputFile, encoding = encoding, output_file = file.path(dirname(inputFile), '/docs/crime.html')) })
+---
+
+[**OECD Home**](index.html)
+
+```{r, echo=FALSE, message=FALSE}
+library(readr)
+library(dplyr)
+library(ggplot2)
+```
+
+```{r, echo=FALSE, message=FALSE}
+homicide <- read_csv("data/REGION_SOCIAL_08012024020734438.csv")
+
+hom_rate <- homicide |> 
+  filter(VAR == "HOMIC_RA") |> 
+  select(4, 10, 17) |> 
+  mutate(# Fix incorrect US rates for 2018 & 2019 - both were 5.0 according to FBI.
+    Value = replace(Value, 
+                    Region == "United States" & Year %in% c(2018,2019), 5.0)
+  )
+
+hom_rate <- hom_rate |> 
+  filter(Region %in% c("Australia", 
+                       "Canada", 
+                       "United Kingdom", 
+                       "New Zealand", 
+                       "United States"))
+
+ggplot(hom_rate, aes(x = Year, y = Value, colour = Region)) +
+  geom_line() +
+  theme_classic() +
+  ylab("Homicides per 100,000 people") +
+  theme(axis.title.y = element_text(margin = margin(t = 0, r = 20, b = 0, l = 0)),
+        axis.title.x = element_text(margin = margin(t = 20, r = 0, b = 0, l = 0))) +
+  ggtitle("Homicide rate for selected OECD countries")
+```
+
